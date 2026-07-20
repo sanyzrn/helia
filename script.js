@@ -1,7 +1,7 @@
 /* =============================================================================
-   Helia Namazi — Portfolio JavaScript (v5)
+   Helia Namazi — Portfolio JavaScript (v7)
    Interaction only: theme & language, navigation, reveal animations, counters,
-   parallax, timeline progress, expand toggles. Content lives in data.js / render.js.
+   timeline progress, expand toggles. Content lives in data.js / render.js.
    ============================================================================= */
 (function () {
     'use strict';
@@ -18,8 +18,18 @@
     }
 
     let currentLang = resolveInitialLang();
-    const prefersReducedMotion = window.matchMedia &&
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const motionMq = window.matchMedia
+        ? window.matchMedia('(prefers-reduced-motion: reduce)')
+        : null;
+    let prefersReducedMotion = !!(motionMq && motionMq.matches);
+    if (motionMq) {
+        const onMotionChange = (e) => { prefersReducedMotion = e.matches; };
+        if (typeof motionMq.addEventListener === 'function') {
+            motionMq.addEventListener('change', onMotionChange);
+        } else if (typeof motionMq.addListener === 'function') {
+            motionMq.addListener(onMotionChange);
+        }
+    }
 
     const $  = (sel, ctx = document) => ctx.querySelector(sel);
     const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
@@ -41,6 +51,7 @@
 
     function init() {
         setupTheme();
+        setupDynamicYear();
         setupExpandToggles();
         setupMobileMenu();
         setupSmoothScroll();
@@ -52,14 +63,13 @@
         setupStatCounters();
         setupLanguage();
         setupKeyboardShortcuts();
-        setupParallax();
-        setupCursorGlow();
         setupHeroImageFallback();
         setupScrollIndicator();
         onContentReady(() => {
             setupTimelineActive();
             setupScrollReveal();
             setupActiveNavObserver();
+            setupCarouselDots();
         });
     }
 
@@ -83,15 +93,40 @@
         });
     }
 
+    /* Dynamic copyright year + bilingual copyright line */
+    function setupDynamicYear() {
+        updateCopyrightLine(currentLang);
+    }
+
+    function updateCopyrightLine(lang) {
+        const line = document.getElementById('copyrightLine');
+        if (!line) return;
+        const year = String(new Date().getFullYear());
+        const prefix = line.getAttribute(lang === 'fa' ? 'data-fa-prefix' : 'data-en-prefix') || '© ';
+        const suffix = line.getAttribute(lang === 'fa' ? 'data-fa-suffix' : 'data-en-suffix') || '';
+        while (line.firstChild) line.removeChild(line.firstChild);
+        line.appendChild(document.createTextNode(prefix));
+        const yearEl = document.createElement('span');
+        yearEl.id = 'year';
+        yearEl.textContent = year;
+        line.appendChild(yearEl);
+        line.appendChild(document.createTextNode(suffix));
+    }
+
     /* Expand/collapse content sections (courses, publications) */
     function setupExpandToggles() {
         $$('.btn-toggle').forEach(btn => {
+            const span = btn.querySelector('span');
+            if (span && !span.dataset.faMore) {
+                span.dataset.faMore = span.getAttribute('data-fa') || 'مشاهده بیشتر';
+                span.dataset.enMore = span.getAttribute('data-en') || 'Show More';
+            }
             btn.addEventListener('click', function () {
                 const id = this.getAttribute('data-target');
                 const content = document.getElementById(id);
                 if (!content) return;
                 const overlay = content.parentElement.querySelector('.expand-overlay');
-                const span = this.querySelector('span');
+                const label = this.querySelector('span');
                 const expanded = content.classList.toggle('expanded');
                 this.classList.toggle('active', expanded);
                 this.setAttribute('aria-expanded', String(expanded));
@@ -99,18 +134,20 @@
                 if (expanded) {
                     content.style.maxHeight = content.scrollHeight + 'px';
                     if (overlay) overlay.style.opacity = '0';
-                    if (span) {
-                        span.setAttribute('data-fa', 'مشاهده کمتر');
-                        span.setAttribute('data-en', 'Show Less');
-                        span.textContent = currentLang === 'fa' ? 'مشاهده کمتر' : 'Show Less';
+                    if (label) {
+                        label.setAttribute('data-fa', 'مشاهده کمتر');
+                        label.setAttribute('data-en', 'Show Less');
+                        label.textContent = currentLang === 'fa' ? 'مشاهده کمتر' : 'Show Less';
                     }
                 } else {
                     content.style.maxHeight = '480px';
                     if (overlay) overlay.style.opacity = '1';
-                    if (span) {
-                        span.setAttribute('data-fa', 'مشاهده بیشتر');
-                        span.setAttribute('data-en', 'Show More');
-                        span.textContent = currentLang === 'fa' ? 'مشاهده بیشتر' : 'Show More';
+                    if (label) {
+                        const faMore = label.dataset.faMore || 'مشاهده بیشتر';
+                        const enMore = label.dataset.enMore || 'Show More';
+                        label.setAttribute('data-fa', faMore);
+                        label.setAttribute('data-en', enMore);
+                        label.textContent = currentLang === 'fa' ? faMore : enMore;
                     }
                     setTimeout(() => {
                         content.closest('section').scrollIntoView({
@@ -120,6 +157,43 @@
                     }, 120);
                 }
             });
+        });
+    }
+
+    /* Mobile carousel page dots for education / skills grids */
+    function setupCarouselDots() {
+        if (window.matchMedia && !window.matchMedia('(max-width: 768px)').matches) return;
+        [['eduGrid', '.edu-card'], ['skillsGrid', '.skill-panel']].forEach(([id, itemSel]) => {
+            const track = document.getElementById(id);
+            if (!track || track.parentElement.querySelector('.carousel-dots')) return;
+            const items = Array.from(track.querySelectorAll(itemSel)).filter(el => el.offsetParent !== null || getComputedStyle(el).display !== 'none');
+            if (items.length < 2) return;
+            const dots = document.createElement('div');
+            dots.className = 'carousel-dots';
+            dots.setAttribute('aria-hidden', 'true');
+            items.forEach((_, i) => {
+                const d = document.createElement('button');
+                d.type = 'button';
+                d.className = 'carousel-dot' + (i === 0 ? ' is-active' : '');
+                d.setAttribute('aria-label', 'Slide ' + (i + 1));
+                d.addEventListener('click', () => {
+                    items[i].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
+                });
+                dots.appendChild(d);
+            });
+            track.parentElement.appendChild(dots);
+            const sync = () => {
+                const mid = track.scrollLeft + track.clientWidth / 2;
+                let best = 0, bestDist = Infinity;
+                items.forEach((item, i) => {
+                    const c = item.offsetLeft + item.offsetWidth / 2;
+                    const dist = Math.abs(c - mid);
+                    if (dist < bestDist) { bestDist = dist; best = i; }
+                });
+                Array.from(dots.children).forEach((d, i) => d.classList.toggle('is-active', i === best));
+            };
+            track.addEventListener('scroll', debounce(sync, 60), { passive: true });
+            sync();
         });
     }
 
@@ -198,7 +272,7 @@
                 e.preventDefault();
                 const headerH = parseInt(getComputedStyle(document.documentElement)
                     .getPropertyValue('--header-height')) || 80;
-                const top = target.getBoundingClientRect().top + window.scrollY - headerH - 8;
+                const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - headerH - 8);
                 window.scrollTo({ top, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
             });
         });
@@ -350,62 +424,6 @@
         return lang === 'fa' ? rounded.toLocaleString('fa-IR') : rounded.toLocaleString('en-US');
     }
 
-    /* Subtle parallax — hero glow orbs (via non-animated wrapper layers so
-       they never fight the orbs' own floatGlow keyframe) + hero image drift
-       on mousemove. Perf-friendly: rAF-throttled, transform-only. */
-    function setupParallax() {
-        if (prefersReducedMotion) return;
-        const layers = $$('.glow-parallax');
-        const heroImage = $('.hero-image');
-        if (!layers.length && !heroImage) return;
-        let mx = 0, my = 0, rafId = null;
-        const hero = $('.hero');
-
-        function onMove(e) {
-            const w = window.innerWidth, h = window.innerHeight;
-            mx = (e.clientX / w - 0.5) * 2;
-            my = (e.clientY / h - 0.5) * 2;
-            if (!rafId) rafId = requestAnimationFrame(apply);
-        }
-        function apply() {
-            rafId = null;
-            layers.forEach((layer) => {
-                const depth = parseFloat(layer.dataset.depth || '1') * 10;
-                layer.style.setProperty('--px', (mx * depth) + 'px');
-                layer.style.setProperty('--py', (my * depth) + 'px');
-            });
-            if (heroImage) heroImage.style.transform = `translate3d(${mx * -4}px, ${my * -4}px, 0)`;
-        }
-        if (hero) hero.addEventListener('mousemove', onMove, { passive: true });
-    }
-
-    /* Cursor-follow spotlight in the hero — a soft glow that tracks the
-       pointer, giving the section an immediately-visible "alive" feel.
-       Pure CSS custom-property update, one element, no layout thrash. */
-    function setupCursorGlow() {
-        if (prefersReducedMotion) return;
-        const hero = $('.hero');
-        if (!hero) return;
-        const glow = document.createElement('div');
-        glow.className = 'cursor-glow';
-        glow.setAttribute('aria-hidden', 'true');
-        hero.appendChild(glow);
-        let rafId = null, x = 0.5, y = 0.35;
-        function apply() {
-            rafId = null;
-            glow.style.setProperty('--gx', (x * 100) + '%');
-            glow.style.setProperty('--gy', (y * 100) + '%');
-        }
-        hero.addEventListener('mousemove', (e) => {
-            const rect = hero.getBoundingClientRect();
-            x = (e.clientX - rect.left) / rect.width;
-            y = (e.clientY - rect.top) / rect.height;
-            if (!rafId) rafId = requestAnimationFrame(apply);
-        }, { passive: true });
-        hero.addEventListener('mouseenter', () => glow.classList.add('is-visible'));
-        hero.addEventListener('mouseleave', () => glow.classList.remove('is-visible'));
-    }
-
     /* If the profile photo fails to load (or hasn't been uploaded yet),
        show a polished gradient + monogram placeholder instead of a broken
        image / empty box, so the hero always looks intentional. */
@@ -483,6 +501,7 @@
                 document.documentElement.classList.remove('lang-en-pending');
                 document.documentElement.setAttribute('dir', 'rtl');
                 document.documentElement.setAttribute('lang', 'fa');
+                if (langToggle) langToggle.setAttribute('aria-label', 'Switch to English / تغییر به انگلیسی');
             } else {
                 if (langText) langText.textContent = 'FA';
                 document.body.classList.add('lang-en');
@@ -490,12 +509,26 @@
                 document.documentElement.classList.remove('lang-en-pending');
                 document.documentElement.setAttribute('dir', 'ltr');
                 document.documentElement.setAttribute('lang', 'en');
+                if (langToggle) langToggle.setAttribute('aria-label', 'تغییر به فارسی / Switch to Persian');
             }
 
             const docTitle = document.querySelector('title[data-fa]');
             if (docTitle) {
                 docTitle.textContent = lang === 'fa' ? docTitle.getAttribute('data-fa') : docTitle.getAttribute('data-en');
             }
+
+            const metaDesc = document.querySelector('meta[name="description"][data-fa]');
+            if (metaDesc) {
+                const descText = lang === 'fa' ? metaDesc.getAttribute('data-fa') : metaDesc.getAttribute('data-en');
+                if (descText) metaDesc.setAttribute('content', descText);
+            }
+
+            const langLive = document.getElementById('langLive');
+            if (langLive) {
+                langLive.textContent = lang === 'fa' ? 'زبان به فارسی تغییر یافت' : 'Language switched to English';
+            }
+
+            updateCopyrightLine(lang);
 
             document.querySelectorAll('[data-fa][data-en]').forEach(el => {
                 const text = lang === 'fa' ? el.getAttribute('data-fa') : el.getAttribute('data-en');
@@ -534,9 +567,13 @@
                 const content = document.getElementById(btn.getAttribute('data-target'));
                 const span = btn.querySelector('span');
                 if (!content || !span) return;
-                span.textContent = content.classList.contains('expanded')
-                    ? (lang === 'fa' ? 'مشاهده کمتر' : 'Show Less')
-                    : (lang === 'fa' ? 'مشاهده بیشتر' : 'Show More');
+                if (content.classList.contains('expanded')) {
+                    span.textContent = lang === 'fa' ? 'مشاهده کمتر' : 'Show Less';
+                } else {
+                    const faMore = span.dataset.faMore || span.getAttribute('data-fa') || 'مشاهده بیشتر';
+                    const enMore = span.dataset.enMore || span.getAttribute('data-en') || 'Show More';
+                    span.textContent = lang === 'fa' ? faMore : enMore;
+                }
             });
 
             if (profileImg) {

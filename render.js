@@ -1,5 +1,5 @@
 /* =============================================================================
-   Helia Namazi — Content Renderer (v5)
+   Helia Namazi — Content Renderer (v7)
    Reads SITE_DATA (data.js) and builds the DOM for content-driven sections.
    Sets window.__contentRendered so script.js can wire post-render behaviour
    even if this runs before script.js registers its listeners.
@@ -319,13 +319,29 @@
         research.appendChild(locP);
         wrap.appendChild(research);
 
-        // Articles
+        // Articles — entry may be a plain string or {text, doi|url} object
         const articles = baseItem(P.articles);
-        P.articles.list.forEach(text => {
+        P.articles.list.forEach(entry => {
             const wrap2 = document.createElement('div');
             wrap2.className = 'ltr-text';
             const p = document.createElement('p');
-            p.textContent = text;
+            if (typeof entry === 'object' && entry !== null) {
+                const linkHref = entry.doi
+                    ? 'https://doi.org/' + entry.doi
+                    : (entry.url || null);
+                if (linkHref) {
+                    const a = document.createElement('a');
+                    a.href = linkHref;
+                    a.target = '_blank';
+                    a.rel = 'noopener noreferrer';
+                    a.textContent = entry.text;
+                    p.appendChild(a);
+                } else {
+                    p.textContent = entry.text;
+                }
+            } else {
+                p.textContent = entry;
+            }
             wrap2.appendChild(p);
             articles.appendChild(wrap2);
         });

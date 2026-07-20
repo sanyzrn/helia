@@ -15,28 +15,28 @@ const SITE_DATA = {
             field: { fa: "بیوتکنولوژی دارویی", en: "Pharmaceutical Biotechnology" },
             uni: { fa: "دانشکده داروسازی، دانشگاه علوم پزشکی شهید بهشتی", en: "School of Pharmacy, Shahid Beheshti University of Medical Sciences" },
             year: { fa: "سال: ۱۳۹۶", en: "Year: 2017" },
-            gpa: { fa: "معدل: ۱۸.۶۲", en: "GPA: 18.62/20" }
+            gpa: { fa: "معدل: ۱۸.۶۲ از ۲۰", en: "GPA: 18.62/20" }
         },
         {
             degree: { fa: "کارشناسی ارشد", en: "M.Sc." },
             field: { fa: "بیوتکنولوژی میکروبی", en: "Microbial Biotechnology" },
             uni: { fa: "دانشکده علوم و فناوری‌های نوین، دانشگاه اصفهان", en: "Faculty of Advanced Sciences and Technologies, University of Isfahan" },
             year: { fa: "سال: ۱۳۸۹", en: "Year: 2010" },
-            gpa: { fa: "معدل: ۱۷.۹۴", en: "GPA: 17.94/20" }
+            gpa: { fa: "معدل: ۱۷.۹۴ از ۲۰", en: "GPA: 17.94/20" }
         },
         {
             degree: { fa: "کارشناسی", en: "B.Sc." },
             field: { fa: "زیست‌شناسی", en: "Biology" },
             uni: { fa: "دانشکده علوم زیستی، دانشگاه خوارزمی (تربیت معلم تهران)", en: "Faculty of Biological Sciences, Kharazmi University" },
             year: { fa: "سال: ۱۳۸۶", en: "Year: 2007" },
-            gpa: { fa: "معدل: ۱۶.۵۸", en: "GPA: 16.58/20" }
+            gpa: { fa: "معدل: ۱۶.۵۸ از ۲۰", en: "GPA: 16.58/20" }
         },
         {
             degree: { fa: "دیپلم", en: "High School Diploma" },
             field: { fa: "علوم تجربی", en: "Experimental Sciences" },
             uni: { fa: "نی‌ریز، استان فارس", en: "Neyriz, Fars Province" },
             year: { fa: "سال: ۱۳۸۱", en: "Year: 2002" },
-            gpa: { fa: "معدل: ۱۹.۵۵", en: "GPA: 19.55/20" }
+            gpa: { fa: "معدل: ۱۹.۵۵ از ۲۰", en: "GPA: 19.55/20" }
         }
     ],
 
@@ -80,7 +80,7 @@ const SITE_DATA = {
         },
         {
             id: "rd",
-            title: { fa: "تحقیق، توسعه و فرمولاسیون (R&D)", en: "Research, Development & Formulation (R&D)" },
+            title: { fa: "تحقیق، توسعه و فرمولاسیون", en: "Research, Development & Formulation" },
             icon: "M10 2v7.31M14 9.3V2M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0",
             tags: [
                 { fa: "فرمولاسیون اشکال متنوع: تزریقی، قرص و کپسول (DC و Wet granulation)، گرانول ذوب‌شونده، محلول خوراکی، اسپری و نانوامولسیون", en: "Dosage forms: injectables, tablets & capsules (DC, Wet granulation), ODG, oral solutions, sprays, and nanoemulsions" },
@@ -109,7 +109,7 @@ const SITE_DATA = {
             icon: "M4 4h16v16H4zM8 8h8M8 12h8M8 16h5",
             tags: [
                 { fa: "تسلط به SPSS، GraphPad Prism، EndNote و مجموعه Microsoft Office", en: "SPSS, GraphPad Prism, EndNote, and Microsoft Office Suite" },
-                { fa: "انگلیسی: تخصصی و حرفه‌ای", en: "English: Professional Proficiency" },
+                { fa: "انگلیسی: سطح C1 (تسلط حرفه‌ای کاری)", en: "English: C1 (Professional Working Proficiency)" },
                 { fa: "فارسی: زبان مادری", en: "Persian: Native" }
             ]
         }
@@ -252,11 +252,24 @@ const SITE_DATA = {
             visible: false,
             emoji: "📄",
             title: { fa: "گزیده مقالات ISI و علمی-پژوهشی", en: "Selected ISI & Scientific-Research Articles" },
+            /* Authorship as published: Namazi H = Helia; Namazi R = Rahele (related publications on CV). */
             list: [
-                "Namazi H, et al. \u201cExosomes secreted by cardiosphere-derived cells have anti-apoptotic effect\u201d, Iranian Journal of Pharmaceutical Research. 2018.",
-                "Namazi H, et al. \u201cExosomes secreted by hypoxic cardiosphere-derived cells enhance tube formation...\u201d, Journal of Cellular Biochemistry. 2017.",
-                "Rostami M, Namazi R, et al. \u201cDesign, synthesis and anti-HIV-1 evaluation...\u201d, Medicinal Chemistry Research. 2015.",
-                "Namazi R, et al. \u201cInhibitory activity of Avicennia marina... against HIV and HSV\u201d, Iranian Journal of Pharmaceutical Research. 2013."
+                {
+                    text: "Namazi H, et al. \u201cExosomes secreted by cardiosphere-derived cells have anti-apoptotic effect\u201d, Iranian Journal of Pharmaceutical Research. 2018.",
+                    url: "https://pubmed.ncbi.nlm.nih.gov/29755568/"
+                },
+                {
+                    text: "Namazi H, et al. \u201cExosomes secreted by hypoxic cardiosphere-derived cells enhance tube formation and increase pro-angiogenic miRNA\u201d, Journal of Cellular Biochemistry. 2017.",
+                    doi: "10.1002/jcb.26621"
+                },
+                {
+                    text: "Rostami M, Namazi R, et al. \u201cDesign, synthesis and anti-HIV-1 evaluation of a series of 5-hydroxypyridine-4-one derivatives\u201d, Medicinal Chemistry Research. 2015.",
+                    doi: "10.1007/s00044-015-1443-4"
+                },
+                {
+                    text: "Namazi R, et al. \u201cInhibitory activity of Avicennia marina, a medicinal plant in Persian folk medicine, against HIV and HSV\u201d, Iranian Journal of Pharmaceutical Research. 2013.",
+                    url: "https://pubmed.ncbi.nlm.nih.gov/24250619/"
+                }
             ]
         }
     }
