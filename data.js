@@ -49,13 +49,7 @@ const SITE_DATA = {
 
     experience: [
         {
-            current: true,
-            date: { fa: "دی ۱۴۰۴ - تا کنون", en: "Jan 2026 - Present" },
-            title: { fa: "مدیر رگولاتوری", en: "Regulatory Affairs Manager" },
-            desc: { fa: "شرکت داروسازی رستا ایمن دارو، هلدینگ تامین سرمایه سلامت (هیتکو)", en: "Rasta Iman Darou Pharmaceutical Company, Health Investment Tamin Holding (Hiteco)" }
-        },
-        {
-            date: { fa: "مهر ۱۴۰۲ - آذر ۱۴۰۴", en: "Sep 2023 - Dec 2025" },
+            date: { fa: "مهر ۱۴۰۲ - اسفند ۱۴۰۴", en: "Sep 2023 - Mar 2026" },
             title: { fa: "مدیر رگولاتوری", en: "Regulatory Affairs Manager" },
             desc: { fa: "شرکت داروسازی نفس زیست فارمد", en: "Nafas Zist Pharmed Pharmaceutical Company" }
         },
