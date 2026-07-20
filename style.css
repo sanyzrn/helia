@@ -1150,14 +1150,13 @@ body.lang-fa .ltr-text {
    ----------------------------------------- */
 footer {
     background: var(--bg-base);
-    padding: 88px 0 28px;
+    padding: var(--section-pad) 0 28px;
     text-align: center;
     border-top: 1px solid var(--border);
     position: relative;
 }
 
 footer .section-header {
-    margin-top: 8px;
     margin-bottom: 40px;
 }
 
@@ -1618,6 +1617,7 @@ footer .section-header {
     .hero-stats { max-width: 480px; margin: 0 auto; }
     .hero-image { width: 280px; height: 280px; margin-bottom: 60px; }
     section { padding: 56px 0; }
+    footer { padding-top: 56px; }
     .nav-links { display: none; }
     .menu-toggle { display: inline-flex; }
 
