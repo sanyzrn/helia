@@ -1,5 +1,5 @@
 /* =============================================================================
-   Helia Namazi — Content Renderer (v6)
+   Helia Namazi — Content Renderer (v7)
    Reads SITE_DATA (data.js) and builds the DOM for content-driven sections.
    Sets window.__contentRendered so script.js can wire post-render behaviour
    even if this runs before script.js registers its listeners.
