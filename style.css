@@ -1150,14 +1150,13 @@ body.lang-fa .ltr-text {
    ----------------------------------------- */
 footer {
     background: var(--bg-base);
-    padding: 88px 0 28px;
+    padding: var(--section-pad) 0 28px;
     text-align: center;
     border-top: 1px solid var(--border);
     position: relative;
 }
 
 footer .section-header {
-    margin-top: 8px;
     margin-bottom: 40px;
 }
 
@@ -1618,6 +1617,7 @@ footer .section-header {
     .hero-stats { max-width: 480px; margin: 0 auto; }
     .hero-image { width: 280px; height: 280px; margin-bottom: 60px; }
     section { padding: 56px 0; }
+    footer { padding-top: 56px; }
     .nav-links { display: none; }
     .menu-toggle { display: inline-flex; }
 
@@ -1647,6 +1647,7 @@ footer .section-header {
 @media (max-width: 768px) {
     :root { --header-height: 58px; }
     section { padding: 48px 0; }
+    footer { padding-top: 48px; }
     .section-header { margin-bottom: 40px; }
     .hero { min-height: auto; padding-top: calc(var(--header-height) + 30px); padding-bottom: 50px; }
     .hero h1 { font-size: clamp(1.6rem, 7vw, 2.1rem); margin-bottom: 16px; }
