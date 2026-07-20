@@ -1647,6 +1647,7 @@ footer .section-header {
 @media (max-width: 768px) {
     :root { --header-height: 58px; }
     section { padding: 48px 0; }
+    footer { padding-top: 48px; }
     .section-header { margin-bottom: 40px; }
     .hero { min-height: auto; padding-top: calc(var(--header-height) + 30px); padding-bottom: 50px; }
     .hero h1 { font-size: clamp(1.6rem, 7vw, 2.1rem); margin-bottom: 16px; }
