@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <!-- Accessible viewport: zoom allowed, no user-scalable=no -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#0284c7" id="themeColorMeta">
+    <meta name="theme-color" content="#5a6570" id="themeColorMeta">
     <meta name="color-scheme" content="light dark">
     <meta name="format-detection" content="telephone=no">
 
@@ -40,7 +40,7 @@
     <!-- Preload critical hero image to improve LCP -->
     <link rel="preload" as="image" href="Drhelianamazi.jpg" fetchpriority="high">
 
-    <link rel="stylesheet" href="style.css?v=6">
+    <link rel="stylesheet" href="style.css?v=7">
 
     <!-- Inline theme/lang bootstrap to avoid flash of incorrect theme or direction -->
     <script>
@@ -51,7 +51,7 @@
                 var theme = saved || (prefersDark ? 'dark' : 'light');
                 document.documentElement.setAttribute('data-theme', theme);
                 var meta = document.getElementById('themeColorMeta');
-                if (meta) meta.setAttribute('content', theme === 'dark' ? '#0b1120' : '#0284c7');
+                if (meta) meta.setAttribute('content', theme === 'dark' ? '#12151a' : '#5a6570');
 
                 var params = new URLSearchParams(window.location.search);
                 var qLang = params.get('lang');
@@ -431,6 +431,6 @@
     </script>
     <script src="data.js?v=6" defer></script>
     <script src="render.js?v=5" defer></script>
-    <script src="script.js?v=5" defer></script>
+    <script src="script.js?v=6" defer></script>
 </body>
 </html>
