@@ -71,7 +71,7 @@
         const updateChrome = () => {
             const dark = root.getAttribute('data-theme') === 'dark';
             btn && btn.setAttribute('aria-pressed', String(dark));
-            if (meta) meta.setAttribute('content', dark ? '#0b1120' : '#0284c7');
+            if (meta) meta.setAttribute('content', dark ? '#12151a' : '#5a6570');
         };
         updateChrome();
         if (!btn) return;
