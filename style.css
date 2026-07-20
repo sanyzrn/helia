@@ -1,6 +1,5 @@
 /* ===========================================================================
-   Dr. Helia Namazi — Portfolio Stylesheet (v3)
-   Refactored: compact mobile menu, refined visuals, accessibility, performance.
+   Helia Namazi — Portfolio Stylesheet (v5)
    =========================================================================== */
 
 /* -----------------------------------------
@@ -125,8 +124,9 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-body.lang-en {
-    font-family: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+body.lang-en,
+html.lang-en-pending body {
+    font-family: 'Vazirmatn', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     line-height: 1.7;
 }
 
@@ -929,32 +929,6 @@ section { padding: 100px 0; position: relative; }
     box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
 }
 
-#skills .list-style-none {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-#skills .list-style-none li {
-    display: inline-flex;
-    align-items: center;
-    padding: 6px 14px;
-    border-radius: var(--radius-pill);
-    background: var(--accent);
-    color: var(--secondary);
-    font-size: 0.83rem;
-    font-weight: 600;
-    border: 1px solid transparent;
-    margin: 0;
-    padding-inline-start: 14px;
-    transition: border-color 0.25s, background-color 0.25s, transform 0.25s;
-}
-#skills .list-style-none li:hover {
-    border-color: var(--secondary);
-    background: var(--surface);
-    transform: translateY(-2px);
-}
-#skills .list-style-none li::before { display: none; }
-
 /* -----------------------------------------
    14. Timeline (experience)
    ----------------------------------------- */
@@ -995,7 +969,7 @@ section { padding: 100px 0; position: relative; }
 }
 .bg-surface-section .timeline-item::before { background: var(--surface); }
 
-.timeline-item:first-child::before {
+.timeline-item.is-current::before {
     box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.4);
     animation: timelinePulse 2.5s infinite;
 }
@@ -1195,7 +1169,7 @@ body.lang-fa .ltr-text {
 .expand-content:not(.expanded) .hidden-course { display: none; }
 
 /* -----------------------------------------
-   17. Footer + contact (VERSION FINALE - فقط آیکون مربعی)
+/* Footer + contact icons */
    ----------------------------------------- */
 footer {
     background: var(--bg-base);
@@ -1257,11 +1231,6 @@ footer {
     background: var(--gradient-accent);
     color: #fff;
     transform: scale(1.06);
-}
-
-/* مخفی کردن کامل متن‌ها */
-.contact-text {
-    display: none;
 }
 
 .copyright {
@@ -1350,19 +1319,6 @@ footer {
     transform: translate3d(var(--px, 0), var(--py, 0), 0);
     transition: transform 0.2s linear;
     will-change: transform;
-}
-
-.btn-ghost {
-    background: transparent;
-    color: var(--text-light);
-    border: 1.5px dashed var(--border-strong);
-}
-.btn-ghost:hover {
-    color: var(--secondary);
-    border-color: var(--secondary);
-    border-style: solid;
-    transform: translateY(-2px);
-    background: var(--accent);
 }
 
 /* -----------------------------------------
@@ -1585,81 +1541,6 @@ footer {
     border-radius: var(--radius-pill);
 }
 .project-card h3 { font-size: 1.15rem; margin: 0 0 16px; font-weight: 800; }
-
-/* -----------------------------------------
-   19h. Testimonials
-   ----------------------------------------- */
-.testimonials-wrap { position: relative; }
-.testimonials-track {
-    display: flex;
-    gap: 24px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding: 4px 4px 20px;
-    scrollbar-width: thin;
-    -webkit-overflow-scrolling: touch;
-}
-.testimonials-track::-webkit-scrollbar { height: 6px; }
-.testimonials-track::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
-
-.testimonial-card {
-    flex: 0 0 min(340px, 85vw);
-    scroll-snap-align: start;
-    background: var(--bg-base);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 30px 26px;
-    margin: 0;
-    position: relative;
-    transition: var(--transition);
-}
-.bg-surface-section .testimonial-card { background: var(--surface); }
-.testimonial-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-.testimonial-card.is-placeholder { border-style: dashed; opacity: 0.85; }
-.testimonial-quote-mark {
-    font-size: 3rem;
-    line-height: 1;
-    color: var(--secondary);
-    opacity: 0.25;
-    font-weight: 900;
-    display: block;
-    margin-bottom: 4px;
-}
-.testimonial-card blockquote {
-    margin: 0 0 20px;
-    font-size: 0.97rem;
-    line-height: 1.8;
-    color: var(--text-main);
-}
-.testimonial-card figcaption { display: flex; flex-direction: column; gap: 2px; }
-.testimonial-name { font-weight: 800; color: var(--primary); font-size: 0.95rem; }
-.testimonial-role { font-size: 0.82rem; color: var(--text-light); }
-
-.testimonials-nav {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 8px;
-}
-.testimonials-nav button {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--primary);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: var(--transition);
-}
-.testimonials-nav button:hover {
-    background: var(--accent);
-    border-color: var(--secondary);
-    color: var(--secondary);
-    transform: translateY(-2px);
-}
 
 /* -----------------------------------------
    19i. Cursor-follow spotlight (hero)
@@ -1887,7 +1768,7 @@ footer {
     .glow-orb { animation: none; }
     .hero-chip { animation: none; }
     .logo::before { animation: none; }
-    .timeline-item:first-child::before { animation: none; }
+    .timeline-item.is-current::before { animation: none; }
 }
 
 /* -----------------------------------------

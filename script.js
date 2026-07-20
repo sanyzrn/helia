@@ -1,14 +1,23 @@
 /* =============================================================================
-   Dr. Helia Namazi — Portfolio JavaScript (v4)
-   Content rendering lives in render.js (reads data.js). This file only wires
-   up interaction/behaviour: theme & language switching, navigation, reveal
-   animations, counters, subtle parallax, the interactive timeline, the
-   skills filter, testimonials, and print/PDF resume support.
+   Helia Namazi — Portfolio JavaScript (v5)
+   Interaction only: theme & language, navigation, reveal animations, counters,
+   parallax, timeline progress, expand toggles. Content lives in data.js / render.js.
    ============================================================================= */
 (function () {
     'use strict';
 
-    let currentLang = localStorage.getItem('language') || 'fa';
+    function resolveInitialLang() {
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const q = params.get('lang');
+            if (q === 'en' || q === 'fa') return q;
+            return localStorage.getItem('language') || 'fa';
+        } catch (e) {
+            return 'fa';
+        }
+    }
+
+    let currentLang = resolveInitialLang();
     const prefersReducedMotion = window.matchMedia &&
         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -58,19 +67,19 @@
     function setupTheme() {
         const btn  = $('#themeToggle');
         const root = document.documentElement;
-        const updateAria = () => {
+        const meta = $('#themeColorMeta');
+        const updateChrome = () => {
             const dark = root.getAttribute('data-theme') === 'dark';
             btn && btn.setAttribute('aria-pressed', String(dark));
+            if (meta) meta.setAttribute('content', dark ? '#0b1120' : '#0284c7');
         };
-        updateAria();
+        updateChrome();
         if (!btn) return;
         btn.addEventListener('click', () => {
             const newTheme = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
             root.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
-            const meta = document.querySelector('meta[name="theme-color"]:not([media])');
-            if (meta) meta.setAttribute('content', newTheme === 'dark' ? '#0b1120' : '#0284c7');
-            updateAria();
+            updateChrome();
         });
     }
 
@@ -90,15 +99,19 @@
                 if (expanded) {
                     content.style.maxHeight = content.scrollHeight + 'px';
                     if (overlay) overlay.style.opacity = '0';
-                    span.setAttribute('data-fa', 'مشاهده کمتر');
-                    span.setAttribute('data-en', 'Show Less');
-                    span.textContent = currentLang === 'fa' ? 'مشاهده کمتر' : 'Show Less';
+                    if (span) {
+                        span.setAttribute('data-fa', 'مشاهده کمتر');
+                        span.setAttribute('data-en', 'Show Less');
+                        span.textContent = currentLang === 'fa' ? 'مشاهده کمتر' : 'Show Less';
+                    }
                 } else {
                     content.style.maxHeight = '480px';
                     if (overlay) overlay.style.opacity = '1';
-                    span.setAttribute('data-fa', 'مشاهده بیشتر');
-                    span.setAttribute('data-en', 'Show More');
-                    span.textContent = currentLang === 'fa' ? 'مشاهده بیشتر' : 'Show More';
+                    if (span) {
+                        span.setAttribute('data-fa', 'مشاهده بیشتر');
+                        span.setAttribute('data-en', 'Show More');
+                        span.textContent = currentLang === 'fa' ? 'مشاهده بیشتر' : 'Show More';
+                    }
                     setTimeout(() => {
                         content.closest('section').scrollIntoView({
                             behavior: prefersReducedMotion ? 'auto' : 'smooth',
@@ -467,12 +480,14 @@
                 if (langText) langText.textContent = 'EN';
                 document.body.classList.remove('lang-en');
                 document.body.classList.add('lang-fa');
+                document.documentElement.classList.remove('lang-en-pending');
                 document.documentElement.setAttribute('dir', 'rtl');
                 document.documentElement.setAttribute('lang', 'fa');
             } else {
                 if (langText) langText.textContent = 'FA';
                 document.body.classList.add('lang-en');
                 document.body.classList.remove('lang-fa');
+                document.documentElement.classList.remove('lang-en-pending');
                 document.documentElement.setAttribute('dir', 'ltr');
                 document.documentElement.setAttribute('lang', 'en');
             }
@@ -512,9 +527,7 @@
 
             const downloadBtn = document.querySelector('.btn-primary[href*="resume"]');
             if (downloadBtn) {
-                downloadBtn.setAttribute('href', lang === 'fa'
-                    ? 'https://www.helianamazi.ir/resume_fa.pdf'
-                    : 'https://www.helianamazi.ir/resume_en.pdf');
+                downloadBtn.setAttribute('href', lang === 'fa' ? 'resume_fa.pdf' : 'resume_en.pdf');
             }
 
             $$('.btn-toggle').forEach(btn => {
@@ -546,7 +559,18 @@
         }
 
         apply(currentLang);
-        if (langToggle) langToggle.addEventListener('click', () => apply(currentLang === 'fa' ? 'en' : 'fa'));
+        if (langToggle) {
+            langToggle.addEventListener('click', () => {
+                const next = currentLang === 'fa' ? 'en' : 'fa';
+                apply(next);
+                try {
+                    const url = new URL(window.location.href);
+                    if (next === 'en') url.searchParams.set('lang', 'en');
+                    else url.searchParams.delete('lang');
+                    history.replaceState(null, '', url.pathname + url.search + url.hash);
+                } catch (e) { /* ignore */ }
+            });
+        }
         document.addEventListener('content:rendered', () => apply(currentLang));
     }
 

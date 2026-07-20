@@ -1,13 +1,6 @@
 /* =============================================================================
-   Dr. Helia Namazi — Content Data Source
-   -----------------------------------------------------------------------------
-   All resume / portfolio TEXT CONTENT lives here, separated from markup and
-   presentation. Every field carries both languages ("fa" / "en") so the
-   existing bilingual engine (data-fa / data-en attributes) can keep working
-   unchanged. render.js reads this object and builds the DOM at load time.
-
-   To localize into a third language, or to update any resume content, edit
-   ONLY this file — no HTML/CSS/JS structural changes are required.
+   Helia Namazi — Content Data Source
+   All bilingual résumé / portfolio text. Edit this file to update site content.
    ============================================================================= */
 const SITE_DATA = {
 
@@ -260,27 +253,5 @@ const SITE_DATA = {
                 "Namazi R, et al. \u201cInhibitory activity of Avicennia marina... against HIV and HSV\u201d, Iranian Journal of Pharmaceutical Research. 2013."
             ]
         }
-    },
-
-    /* Placeholder testimonials — replace with real quotes & names before publishing. */
-    testimonials: [
-        {
-            placeholder: true,
-            quote: { fa: "همکاری با ایشان در پروژه‌های رگولاتوری، دقت و تسلط بالای علمی را به‌وضوح نشان داد.", en: "Working together on regulatory projects clearly showed exceptional scientific rigor and expertise." },
-            name: { fa: "افزودن نظر همکار", en: "Add a colleague's testimonial" },
-            role: { fa: "متن نمونه — جایگزین کنید", en: "Sample text — please replace" }
-        },
-        {
-            placeholder: true,
-            quote: { fa: "مدیریت واحد تحقیق و توسعه با برنامه‌ریزی دقیق و نتایج قابل اتکا همراه بود.", en: "R&D unit management was marked by careful planning and reliable results." },
-            name: { fa: "افزودن نظر مدیر پروژه", en: "Add a project manager's testimonial" },
-            role: { fa: "متن نمونه — جایگزین کنید", en: "Sample text — please replace" }
-        },
-        {
-            placeholder: true,
-            quote: { fa: "تعامل حرفه‌ای و پاسخگویی سریع در فرآیندهای ثبت دارو، تجربه‌ای مثبت برای تیم بود.", en: "Professional communication and fast turnaround on drug-registration processes made for a great experience." },
-            name: { fa: "افزودن نظر شریک تجاری", en: "Add a business partner's testimonial" },
-            role: { fa: "متن نمونه — جایگزین کنید", en: "Sample text — please replace" }
-        }
-    ]
+    }
 };

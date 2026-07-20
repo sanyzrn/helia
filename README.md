@@ -1,6 +1,6 @@
-# Dr. Helia Namazi — Personal Website
+# Helia Namazi — Personal Website
 
-Official bilingual portfolio / résumé site for **Dr. Helia Namazi** (دکتر هلیا نمازی), Ph.D. in Pharmaceutical Biotechnology, Regulatory Affairs & R&D Manager.
+Official bilingual portfolio / résumé site for **Helia Namazi** (هلیا نمازی), Ph.D. in Pharmaceutical Biotechnology, Regulatory Affairs & R&D Manager.
 
 Live site: [helianamazi.ir](https://www.helianamazi.ir)
 

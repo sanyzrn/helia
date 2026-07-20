@@ -1,10 +1,8 @@
 /* =============================================================================
-   Dr. Helia Namazi — Content Renderer
-   -----------------------------------------------------------------------------
-   Reads SITE_DATA (data.js) and builds the DOM for every content-driven
-   section. Runs once, synchronously, before script.js's language/animation
-   setup — so translation, counters and scroll-reveal all work exactly as
-   they did when the content was hard-coded in HTML.
+   Helia Namazi — Content Renderer (v5)
+   Reads SITE_DATA (data.js) and builds the DOM for content-driven sections.
+   Sets window.__contentRendered so script.js can wire post-render behaviour
+   even if this runs before script.js registers its listeners.
    ============================================================================= */
 (function () {
     'use strict';
@@ -82,7 +80,7 @@
         if (!ol) return;
         SITE_DATA.experience.forEach((item, i) => {
             const li = document.createElement('li');
-            li.className = 'timeline-item';
+            li.className = 'timeline-item' + (item.current ? ' is-current' : '');
             reveal(li, 0);
             const content = document.createElement('div');
             content.className = 'timeline-content';
@@ -130,6 +128,8 @@
         allTab.className = 'skill-tab active';
         allTab.type = 'button';
         allTab.dataset.filter = 'all';
+        allTab.setAttribute('role', 'tab');
+        allTab.setAttribute('aria-selected', 'true');
         allTab.appendChild(bi('span', { fa: 'همه', en: 'All' }));
         tabs.appendChild(allTab);
 
@@ -138,6 +138,8 @@
             tab.className = 'skill-tab';
             tab.type = 'button';
             tab.dataset.filter = group.id;
+            tab.setAttribute('role', 'tab');
+            tab.setAttribute('aria-selected', 'false');
             tab.appendChild(bi('span', group.title));
             tabs.appendChild(tab);
 
@@ -171,8 +173,11 @@
         tabs.addEventListener('click', (e) => {
             const btn = e.target.closest('.skill-tab');
             if (!btn) return;
-            tabs.querySelectorAll('.skill-tab').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
+            tabs.querySelectorAll('.skill-tab').forEach(t => {
+                const on = t === btn;
+                t.classList.toggle('active', on);
+                t.setAttribute('aria-selected', String(on));
+            });
             const filter = btn.dataset.filter;
             grid.querySelectorAll('.skill-panel').forEach(panel => {
                 panel.classList.toggle('is-hidden', filter !== 'all' && panel.dataset.group !== filter);
@@ -325,29 +330,6 @@
         wrap.appendChild(articles);
     }
 
-    /* -------------------------------------------------------------------------
-       Testimonials
-       ------------------------------------------------------------------------- */
-    function renderTestimonials() {
-        const track = document.getElementById('testimonialsTrack');
-        if (!track) return;
-        SITE_DATA.testimonials.forEach((t, i) => {
-            const card = reveal(document.createElement('figure'), i * 0.1);
-            card.className = 'testimonial-card' + (t.placeholder ? ' is-placeholder' : '');
-            const quoteMark = document.createElement('span');
-            quoteMark.className = 'testimonial-quote-mark';
-            quoteMark.setAttribute('aria-hidden', 'true');
-            quoteMark.textContent = '\u201C';
-            card.appendChild(quoteMark);
-            card.appendChild(bi('blockquote', t.quote));
-            const cap = document.createElement('figcaption');
-            cap.appendChild(bi('span', t.name, { class: 'testimonial-name' }));
-            cap.appendChild(bi('span', t.role, { class: 'testimonial-role' }));
-            card.appendChild(cap);
-            track.appendChild(card);
-        });
-    }
-
     function renderAll() {
         renderEducation();
         renderExperience();
@@ -356,7 +338,7 @@
         renderCourses();
         renderProjects();
         renderPublications();
-        // renderTestimonials(); // Hidden for now — re-enable when real quotes are ready.
+        window.__contentRendered = true;
         document.dispatchEvent(new CustomEvent('content:rendered'));
     }
 
