@@ -4,29 +4,28 @@
     <meta charset="UTF-8">
     <!-- Accessible viewport: zoom allowed, no user-scalable=no -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#0284c7" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#0b1120" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#0284c7" id="themeColorMeta">
     <meta name="color-scheme" content="light dark">
     <meta name="format-detection" content="telephone=no">
 
-    <title data-fa="دکتر هلیا نمازی | متخصص بیوتکنولوژی دارویی و رگولاتوری" data-en="Dr. Helia Namazi | Pharmaceutical Biotechnology &amp; Regulatory Affairs Expert">دکتر هلیا نمازی | متخصص بیوتکنولوژی دارویی و رگولاتوری</title>
-    <meta name="description" content="رزومه رسمی دکتر هلیا نمازی — دکترای تخصصی بیوتکنولوژی دارویی، مدیر رگولاتوری و تحقیق و توسعه (R&amp;D)، با سابقه فعالیت در سازمان غذا و دارو و شرکت‌های پیشرو صنعت دارویی ایران.">
+    <title data-fa="هلیا نمازی | متخصص بیوتکنولوژی دارویی و رگولاتوری" data-en="Helia Namazi | Pharmaceutical Biotechnology &amp; Regulatory Affairs Expert">هلیا نمازی | متخصص بیوتکنولوژی دارویی و رگولاتوری</title>
+    <meta name="description" content="رزومه رسمی هلیا نمازی — دکترای تخصصی بیوتکنولوژی دارویی، مدیر رگولاتوری و تحقیق و توسعه (R&amp;D)، با سابقه فعالیت در سازمان غذا و دارو و شرکت‌های پیشرو صنعت دارویی ایران.">
     <meta name="keywords" content="هلیا نمازی, بیوتکنولوژی دارویی, رگولاتوری, R&amp;D, سازمان غذا و دارو, CTD, GMP, Helia Namazi, Pharmaceutical Biotechnology, Regulatory Affairs">
-    <meta name="author" content="Dr. Helia Namazi">
+    <meta name="author" content="Helia Namazi">
     <meta name="robots" content="index, follow, max-image-preview:large">
 
     <!-- Open Graph / Social -->
     <meta property="og:type" content="profile">
     <meta property="og:locale" content="fa_IR">
     <meta property="og:locale:alternate" content="en_US">
-    <meta property="og:site_name" content="Dr. Helia Namazi">
-    <meta property="og:title" content="دکتر هلیا نمازی | متخصص بیوتکنولوژی دارویی">
+    <meta property="og:site_name" content="Helia Namazi">
+    <meta property="og:title" content="هلیا نمازی | متخصص بیوتکنولوژی دارویی">
     <meta property="og:description" content="دکترای تخصصی بیوتکنولوژی دارویی، مدیر رگولاتوری و R&amp;D با سابقه فعالیت در سازمان غذا و دارو.">
     <meta property="og:image" content="https://www.helianamazi.ir/Drhelianamazi.jpg">
-    <meta property="og:image:alt" content="Dr. Helia Namazi">
+    <meta property="og:image:alt" content="Helia Namazi">
     <meta property="og:url" content="https://www.helianamazi.ir">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Dr. Helia Namazi | Pharmaceutical Biotechnology Expert">
+    <meta name="twitter:title" content="Helia Namazi | Pharmaceutical Biotechnology Expert">
     <meta name="twitter:description" content="PhD in Pharmaceutical Biotechnology, Regulatory Affairs &amp; R&amp;D Manager.">
     <meta name="twitter:image" content="https://www.helianamazi.ir/Drhelianamazi.jpg">
 
@@ -35,15 +34,15 @@
     <link rel="alternate" hreflang="en" href="https://www.helianamazi.ir/?lang=en">
     <link rel="alternate" hreflang="x-default" href="https://www.helianamazi.ir/">
 
-    <link rel="icon" type="image/svg+xml" href="https://www.helianamazi.ir/favicon.svg">
-    <link rel="apple-touch-icon" href="https://www.helianamazi.ir/Drhelianamazi.jpg">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="Drhelianamazi.jpg">
 
     <!-- Preload critical hero image to improve LCP -->
-    <link rel="preload" as="image" href="https://www.helianamazi.ir/Drhelianamazi.jpg" fetchpriority="high">
+    <link rel="preload" as="image" href="Drhelianamazi.jpg" fetchpriority="high">
 
-    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="style.css?v=5">
 
-    <!-- Inline theme bootstrap to avoid flash of incorrect theme (FOIT/FOUC) -->
+    <!-- Inline theme/lang bootstrap to avoid flash of incorrect theme or direction -->
     <script>
         (function () {
             try {
@@ -51,12 +50,19 @@
                 var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
                 var theme = saved || (prefersDark ? 'dark' : 'light');
                 document.documentElement.setAttribute('data-theme', theme);
-                var lang = localStorage.getItem('language') || 'fa';
+                var meta = document.getElementById('themeColorMeta');
+                if (meta) meta.setAttribute('content', theme === 'dark' ? '#0b1120' : '#0284c7');
+
+                var params = new URLSearchParams(window.location.search);
+                var qLang = params.get('lang');
+                var lang = (qLang === 'en' || qLang === 'fa') ? qLang : (localStorage.getItem('language') || 'fa');
+                if (qLang === 'en' || qLang === 'fa') localStorage.setItem('language', lang);
                 if (lang === 'en') {
                     document.documentElement.setAttribute('lang', 'en');
                     document.documentElement.setAttribute('dir', 'ltr');
+                    document.documentElement.classList.add('lang-en-pending');
                 }
-            } catch (e) { /* localStorage unavailable — defaults remain */ }
+            } catch (e) { /* storage/URL unavailable — defaults remain */ }
         })();
     </script>
 </head>
@@ -79,7 +85,7 @@
     <header id="header" role="banner">
         <div class="container">
             <nav aria-label="Primary">
-                <a href="#" class="logo" data-fa="دکتر هلیا نمازی" data-en="Dr. Helia Namazi">دکتر هلیا نمازی</a>
+                <a href="#" class="logo" data-fa="هلیا نمازی" data-en="Helia Namazi">هلیا نمازی</a>
 
                 <ul class="nav-links" id="navMenu" role="menu">
 					<li role="none"><a role="menuitem" href="#about" id="nav-about" data-fa="پروفایل" data-en="Profile">پروفایل</a></li>
@@ -156,7 +162,7 @@
                         دکترای تخصصی بیوتکنولوژی دارویی و فارغ‌التحصیل ممتاز (نفر اول آزمون جامع) با سابقه‌ای غنی و چندوجهی در زنجیره تامین و تولید دارویی کشور. دارای تجربه ارزشمند در مدیریت امور رگولاتوری، سرپرستی واحدهای تحقیق و توسعه و فعالیت به عنوان کارشناس متخصص در سازمان غذا و دارو.
                     </p>
                     <div class="hero-actions">
-                        <a href="https://www.helianamazi.ir/resume_fa.pdf" target="_blank" rel="noopener" class="btn btn-primary">
+                        <a href="resume_fa.pdf" target="_blank" rel="noopener" class="btn btn-primary">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                             <span data-fa="دانلود رزومه" data-en="Download CV">دانلود رزومه</span>
                         </a>
@@ -183,11 +189,11 @@
                     </ul>
                 </div>
                 <div class="hero-image reveal" style="transition-delay: 0.15s;">
-                    <img src="https://www.helianamazi.ir/Drhelianamazi.jpg" id="profileImg"
-                         alt="دکتر هلیا نمازی"
-                         data-fa-alt="دکتر هلیا نمازی"
-                         data-en-alt="Dr. Helia Namazi"
-                         width="400" height="400"
+                    <img src="Drhelianamazi.jpg" id="profileImg"
+                         alt="هلیا نمازی"
+                         data-fa-alt="هلیا نمازی"
+                         data-en-alt="Helia Namazi"
+                         width="269" height="359"
                          loading="eager" decoding="async" fetchpriority="high">
                     <div class="hero-image-monogram" aria-hidden="true">ه.ن</div>
                     <div class="hero-chips">
@@ -230,15 +236,11 @@
                 <h2 data-fa="سوابق شغلی و اجرایی" data-en="Professional Experience">سوابق شغلی و اجرایی</h2>
             </div>
 
-            <div class="expand-wrapper">
-                <div class="expand-content untruncated" id="experience-content">
-                    <ol class="timeline" id="expTimeline" aria-label="Work experience timeline"></ol>
-                </div>
-            </div>
+            <ol class="timeline" id="expTimeline" aria-label="Work experience timeline"></ol>
         </div>
     </section>
 
-    <section id="certificates" class="bg-surface-section">
+    <section id="certificates">
         <div class="container">
             <div class="section-header reveal">
                 <span class="section-eyebrow" data-fa="گواهی‌های حرفه‌ای" data-en="Professional Certificates">گواهی‌های حرفه‌ای</span><br>
@@ -327,32 +329,32 @@
             </div>
 
 <div class="contact-wrap reveal">
-    <a href="mailto:helia.namazi2017@gmail.com" class="contact-link" aria-label="Email">
-        <span class="contact-icon" aria-hidden="true">
-            <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
-        </span>
-    </a>
-    <a href="tel:+989128753389" class="contact-link" aria-label="Phone">
-        <span class="contact-icon" aria-hidden="true">
-            <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        </span>
-    </a>
-    <a href="https://www.helianamazi.ir" class="contact-link" aria-label="Website">
-        <span class="contact-icon" aria-hidden="true">
-            <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"/></svg>
-        </span>
-    </a>
-    <a href="https://www.linkedin.com/in/helia-namazi-507351a9" class="contact-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
-        <span class="contact-icon" aria-hidden="true">
-            <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 2a2 2 0 110 4 2 2 0 010-4z"/>
-            </svg>
-        </span>
-    </a>
-</div>
+                <a href="mailto:helia.namazi2017@gmail.com" class="contact-link" aria-label="Email">
+                    <span class="contact-icon" aria-hidden="true">
+                        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+                    </span>
+                </a>
+                <a href="tel:+989128753389" class="contact-link" aria-label="Phone">
+                    <span class="contact-icon" aria-hidden="true">
+                        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </span>
+                </a>
+                <a href="https://www.helianamazi.ir" class="contact-link" aria-label="Website">
+                    <span class="contact-icon" aria-hidden="true">
+                        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"/></svg>
+                    </span>
+                </a>
+                <a href="https://www.linkedin.com/in/helia-namazi-507351a9" class="contact-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+                    <span class="contact-icon" aria-hidden="true">
+                        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 2a2 2 0 110 4 2 2 0 010-4z"/>
+                        </svg>
+                    </span>
+                </a>
+            </div>
 
             <div class="copyright">
-                <p data-fa="© ۲۰۲۶ دکتر هلیا نمازی — تمامی حقوق محفوظ است." data-en="© 2026 Dr. Helia Namazi — All rights reserved.">© ۲۰۲۶ دکتر هلیا نمازی — تمامی حقوق محفوظ است.</p>
+                <p data-fa="© ۲۰۲۶ هلیا نمازی — تمامی حقوق محفوظ است." data-en="© 2026 Helia Namazi — All rights reserved.">© ۲۰۲۶ هلیا نمازی — تمامی حقوق محفوظ است.</p>
                 <p dir="ltr" class="creator-credit">
                     Created with ❤️ by <a href="https://dbsgraphic.ir/" target="_blank" rel="noopener" class="dbs-link">DBS Graphic</a>
                 </p>
@@ -369,10 +371,10 @@
     {
       "@context": "https://schema.org",
       "@type": "Person",
-      "name": "Dr. Helia Namazi",
-      "alternateName": ["هلیا نمازی", "Helia Namazi"],
-      "jobTitle": "Regulatory Affairs &amp; R&amp;D Manager",
-      "description": "PhD in Pharmaceutical Biotechnology, Regulatory Affairs &amp; R&amp;D Manager with extensive experience in Iran's pharmaceutical industry and the Iran Food and Drug Administration.",
+      "name": "Helia Namazi",
+      "alternateName": ["هلیا نمازی"],
+      "jobTitle": "Regulatory Affairs & R&D Manager",
+      "description": "PhD in Pharmaceutical Biotechnology, Regulatory Affairs & R&D Manager with extensive experience in Iran's pharmaceutical industry and the Iran Food and Drug Administration.",
       "url": "https://www.helianamazi.ir",
       "image": "https://www.helianamazi.ir/Drhelianamazi.jpg",
       "email": "helia.namazi2017@gmail.com",
@@ -414,11 +416,14 @@
           "name": "Iran"
         }
       },
-      "sameAs": ["https://www.helianamazi.ir"]
+      "sameAs": [
+        "https://www.helianamazi.ir",
+        "https://www.linkedin.com/in/helia-namazi-507351a9"
+      ]
     }
     </script>
     <script src="data.js?v=5" defer></script>
-    <script src="render.js?v=4" defer></script>
-    <script src="script.js?v=4" defer></script>
+    <script src="render.js?v=5" defer></script>
+    <script src="script.js?v=5" defer></script>
 </body>
 </html>
