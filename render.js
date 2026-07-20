@@ -134,6 +134,8 @@
         tabs.appendChild(allTab);
 
         SITE_DATA.skills.forEach((group, gi) => {
+            if (group.visible === false) return;
+
             const tab = document.createElement('button');
             tab.className = 'skill-tab';
             tab.type = 'button';
