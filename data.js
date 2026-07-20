@@ -104,6 +104,7 @@ const SITE_DATA = {
         },
         {
             id: "tools",
+            visible: false,
             title: { fa: "نرم‌افزارها و زبان‌ها", en: "Software & Languages" },
             icon: "M4 4h16v16H4zM8 8h8M8 12h8M8 16h5",
             tags: [
