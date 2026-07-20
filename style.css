@@ -1,15 +1,11 @@
 /* ===========================================================================
-   Helia Namazi — Portfolio Stylesheet (v7 · minimal)
+   Helia Namazi — Portfolio Stylesheet (v11 · minimal)
    =========================================================================== */
 
 /* -----------------------------------------
    1. Local Vazirmatn font faces
    ----------------------------------------- */
-@font-face {
-    font-family: 'Vazirmatn';
-    src: url('font/vazirmatn-arabic-300-normal-BYd1kBEw.woff2') format('woff2');
-    font-weight: 300; font-style: normal; font-display: swap;
-}
+/* weight 300 is not used in any rule — omitted to save a network request */
 @font-face {
     font-family: 'Vazirmatn';
     src: url('font/vazirmatn-arabic-400-normal-DMZFCm7K.woff2') format('woff2');
@@ -28,7 +24,7 @@
 @font-face {
     font-family: 'Vazirmatn';
     src: url('font/vazirmatn-arabic-900-normal-BVDx3pOU.woff2') format('woff2');
-    font-weight: 700; font-style: normal; font-display: swap;
+    font-weight: 900; font-style: normal; font-display: swap;
 }
 
 /* -----------------------------------------
@@ -40,7 +36,8 @@
     --secondary-hover: #3f4750;
     --accent: #eef0f2;
     --text-main: #4a5058;
-    --text-light: #7a828c;
+    --text-light: #5f6770;
+    --brand-accent: #4a6b5c;
     --bg-base: #f6f6f7;
     --surface: #ffffff;
     --surface-2: #eceef0;
@@ -157,7 +154,7 @@ img { max-width: 100%; height: auto; display: block; }
 
 /* Section scroll-margin so anchor links land below the fixed header */
 section, footer {
-    scroll-margin-top: calc(var(--header-height) + 12px);
+    scroll-margin-top: calc(var(--header-height) + env(safe-area-inset-top, 0px) + 12px);
 }
 
 /* -----------------------------------------
@@ -251,6 +248,7 @@ header {
     -webkit-backdrop-filter: blur(18px) saturate(180%);
     border-bottom: 1px solid transparent;
     transition: background 0.4s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
+    padding-top: env(safe-area-inset-top, 0px);
 }
 @supports not (backdrop-filter: blur(18px)) {
     header { background: var(--bg-base); }
@@ -521,7 +519,7 @@ body.lang-en .mobile-nav a:focus-visible svg { --dir-sign: -1; }
 }
 [data-theme="dark"] .btn-primary { color: #12151a; }
 .btn-primary:hover {
-    background: var(--secondary-hover);
+    background: var(--brand-accent);
     color: #fff;
 }
 .btn-primary:active { transform: scale(0.98); }
@@ -544,7 +542,7 @@ body.lang-en .mobile-nav a:focus-visible svg { --dir-sign: -1; }
     min-height: min(100vh, 780px);
     display: flex;
     align-items: center;
-    padding-top: var(--header-height);
+    padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px));
     padding-bottom: 28px;
     position: relative;
 }
@@ -576,8 +574,8 @@ body.lang-en .mobile-nav a:focus-visible svg { --dir-sign: -1; }
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: var(--secondary);
-    opacity: 0.7;
+    background: var(--brand-accent);
+    opacity: 0.85;
 }
 
 .hero h1 {
@@ -596,7 +594,7 @@ body.lang-en .mobile-nav a:focus-visible svg { --dir-sign: -1; }
     color: var(--text-light);
     margin: 0 0 18px;
     max-width: 620px;
-    text-align: justify;
+    text-align: start;
 }
 
 .hero-meta {
@@ -685,7 +683,7 @@ body.lang-en .mobile-nav a:focus-visible svg { --dir-sign: -1; }
     bottom: -18px;
     inset-inline-start: -18px;
     width: 100%; height: 100%;
-    border: 2px dashed var(--secondary);
+    border: 1px solid rgba(90, 101, 112, 0.15);
     border-radius: var(--radius-xl);
     z-index: 1;
     transition: transform 0.5s var(--ease);
@@ -756,16 +754,13 @@ section { padding: var(--section-pad) 0; position: relative; }
     content: '';
     position: absolute;
     bottom: 0;
-    inset-inline-start: 50%;
-    transform: translateX(50%);
-    width: 56px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36px;
     height: 3px;
     background: var(--border-strong);
     border-radius: 1px;
-    width: 36px;
 }
-[dir="rtl"] .section-header h2::after { transform: translateX(50%); }
-[dir="ltr"] .section-header h2::after { transform: translateX(-50%); }
 .section-subtitle {
     color: var(--text-light);
     font-size: 1rem;
@@ -848,10 +843,11 @@ section { padding: var(--section-pad) 0; position: relative; }
     width: 100%;
     height: 3px;
     background: var(--gradient-accent);
-    transform-origin: inset-inline-end;
+    transform-origin: right;
     transform: scaleX(0);
     transition: transform 0.5s var(--ease);
 }
+[dir="rtl"] .card::before { transform-origin: left; }
 .bg-surface-section .card { background: var(--bg-base); }
 .card:hover {
     transform: translateY(-2px);
@@ -876,7 +872,6 @@ section { padding: var(--section-pad) 0; position: relative; }
 .card:hover .card-icon {
     transform: none;
     background: var(--primary);
-    color: var(--bg-base);
     color: #fff;
 }
 
@@ -1174,8 +1169,8 @@ footer .section-header {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 70px;
-    height: 70px;
+    width: 56px;
+    height: 56px;
     background: var(--surface);
     border-radius: var(--radius-lg);
     border: 1px solid var(--border);
@@ -1192,8 +1187,8 @@ footer .section-header {
 }
 
 .contact-icon {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: var(--radius-md);
     background: var(--accent);
     color: var(--secondary);
@@ -1204,8 +1199,8 @@ footer .section-header {
 }
 
 .contact-icon svg {
-    width: 12px;
-    height: 12px;
+    width: 20px;
+    height: 20px;
 }
 
 .contact-link:hover .contact-icon {
@@ -1298,19 +1293,6 @@ footer .section-header {
 }
 @supports not (backdrop-filter: blur(1px)) {
     .glass { background: var(--surface); }
-}
-
-/* -----------------------------------------
-   19c. Hero — floating accent chips + parallax targets
-   ----------------------------------------- */
-/* Parallax is applied to .glow-parallax (a non-animated wrapper around each
-   orb) so it never fights the orb's own floatGlow keyframe animation. */
-.glow-parallax {
-    position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;
-    transform: translate3d(var(--px, 0), var(--py, 0), 0);
-    transition: transform 0.2s linear;
-    will-change: transform;
 }
 
 /* -----------------------------------------
@@ -1467,8 +1449,8 @@ footer .section-header {
     color: var(--secondary);
     font-size: 0.83rem;
     font-weight: 600;
-    padding: 7px 15px;
-    border-radius: var(--radius-pill);
+    padding: 6px 13px;
+    border-radius: var(--radius-sm);
     border: 1px solid transparent;
     opacity: 0;
     transform: translateY(8px);
@@ -1533,24 +1515,6 @@ footer .section-header {
     border-radius: var(--radius-pill);
 }
 .project-card h3 { font-size: 1.02rem; margin: 0 0 16px; font-weight: 700; }
-
-/* -----------------------------------------
-   19i. Cursor-follow spotlight (hero)
-   ----------------------------------------- */
-.cursor-glow {
-    position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.5s var(--ease);
-    background: radial-gradient(480px circle at var(--gx, 50%) var(--gy, 35%),
-        rgba(90, 101, 112, 0.16), transparent 70%);
-}
-.cursor-glow { display: none !important; }
-.cursor-glow.is-visible { opacity: 0; }
-[data-theme="dark"] .cursor-glow { background: radial-gradient(480px circle at var(--gx, 50%) var(--gy, 35%), rgba(154, 163, 173, 0.22), transparent 70%); }
-@media (max-width: 992px), (hover: none) { .cursor-glow { display: none; } }
 
 /* -----------------------------------------
    19j. Counter completion pulse
@@ -1694,17 +1658,23 @@ footer .section-header {
     
     #backToTop { bottom: 20px; inset-inline-end: 20px; width: 42px; height: 42px; }
 
-    /* Education / Certificates / Skills — swipeable single-card carousel
-       instead of a tall stacked grid, so these sections don't eat the
-       whole screen on a phone. Native scroll-snap: no extra JS needed. */
+    /* Certificates — vertical single-column stack (no carousel) */
+    .cards-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        overflow: visible;
+        gap: 14px;
+    }
+
+    /* Education / Skills — swipeable carousel with peek.
+       Native scroll-snap: no extra JS needed. */
     .edu-grid,
-    .cards-grid,
     .skill-grid {
         display: flex;
         overflow-x: auto;
         overflow-y: hidden;
         overscroll-behavior-x: contain;
-        scroll-snap-type: x mandatory;
+        scroll-snap-type: x proximity;
         -webkit-overflow-scrolling: touch;
         gap: 14px;
         margin: 0 -20px;
@@ -1713,26 +1683,23 @@ footer .section-header {
         align-items: stretch;
     }
     .edu-grid::-webkit-scrollbar,
-    .cards-grid::-webkit-scrollbar,
     .skill-grid::-webkit-scrollbar { display: none; height: 0; }
-    .edu-grid > *,
-    .cards-grid > * {
-        flex: 0 0 82%;
+    .edu-grid > * {
+        flex: 0 0 78%;
         scroll-snap-align: center;
         min-width: 0;
         align-self: stretch;
     }
     .skill-grid > .skill-panel {
-        flex: 0 0 88%;
+        flex: 0 0 78%;
         scroll-snap-align: center;
         min-width: 0;
         align-self: stretch;
     }
-    .edu-grid, .cards-grid, .skill-grid { scroll-padding: 0 20px; }
+    .edu-grid, .skill-grid { scroll-padding: 0 20px; }
 
     /* Avoid hover/reveal transforms creating vertical overflow in carousels */
     .edu-grid .edu-card:hover,
-    .cards-grid .card:hover,
     .skill-grid .skill-chip:hover {
         transform: none;
     }
@@ -1801,7 +1768,7 @@ footer .section-header {
     #backToTop, .ambient-bg, .scroll-progress, .btn-toggle, .toggle-btn-container,
     .hero-actions, .expand-overlay, .skip-link,
     .scroll-indicator, .hero-chips, .glow-orb, .skill-tabs,
-    .cursor-glow, .project-card::before { display: none !important; }
+    .project-card::before { display: none !important; }
     .hero { min-height: auto; padding-top: 0; page-break-after: avoid; }
     .hero-wrapper { gap: 30px; }
     .hero-image { width: 180px; height: 180px; }
