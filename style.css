@@ -1012,7 +1012,7 @@ body.lang-en .timeline-content:hover { --dir-sign: -1; }
    ----------------------------------------- */
 .edu-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 14px;
 }
 .edu-card {
@@ -1146,14 +1146,19 @@ body.lang-fa .ltr-text {
 .expand-content:not(.expanded) .hidden-course { display: none; }
 
 /* -----------------------------------------
-/* Footer + contact icons */
+   Footer + contact icons
    ----------------------------------------- */
 footer {
     background: var(--bg-base);
-    padding: 56px 0 24px;
+    padding: 88px 0 28px;
     text-align: center;
     border-top: 1px solid var(--border);
     position: relative;
+}
+
+footer .section-header {
+    margin-top: 8px;
+    margin-bottom: 40px;
 }
 
 /* 4 آیکون مربعی در کنار هم */
@@ -1215,9 +1220,19 @@ footer {
     padding-top: 28px;
     max-width: 600px;
     margin: 0 auto;
+    text-align: center;
 }
-.copyright p { margin: 4px 0; font-size: 0.88rem; }
-.copyright .creator-credit { margin-top: 10px; font-size: 0.85rem; }
+.copyright p {
+    margin: 4px 0;
+    font-size: 0.88rem;
+    text-align: center;
+}
+.copyright .creator-credit {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    text-align: center;
+    direction: ltr;
+}
 .dbs-link {
     color: var(--secondary);
     text-decoration: none;
@@ -1408,7 +1423,7 @@ footer {
 
 .skill-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 14px;
 }
 .skill-panel {
@@ -1686,27 +1701,44 @@ footer {
     .skill-grid {
         display: flex;
         overflow-x: auto;
+        overflow-y: hidden;
+        overscroll-behavior-x: contain;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
         gap: 14px;
         margin: 0 -20px;
-        padding: 4px 20px 14px;
+        padding: 2px 20px 10px;
         scrollbar-width: none;
+        align-items: stretch;
     }
     .edu-grid::-webkit-scrollbar,
     .cards-grid::-webkit-scrollbar,
-    .skill-grid::-webkit-scrollbar { display: none; }
+    .skill-grid::-webkit-scrollbar { display: none; height: 0; }
     .edu-grid > *,
     .cards-grid > * {
         flex: 0 0 82%;
         scroll-snap-align: center;
+        min-width: 0;
+        align-self: stretch;
     }
     .skill-grid > .skill-panel {
         flex: 0 0 88%;
         scroll-snap-align: center;
+        min-width: 0;
+        align-self: stretch;
     }
-    /* Small swipe hint dots under the carousel */
     .edu-grid, .cards-grid, .skill-grid { scroll-padding: 0 20px; }
+
+    /* Avoid hover/reveal transforms creating vertical overflow in carousels */
+    .edu-grid .edu-card:hover,
+    .cards-grid .card:hover,
+    .skill-grid .skill-chip:hover {
+        transform: none;
+    }
+    .skill-grid .skill-chip {
+        transform: none;
+        opacity: 1;
+    }
 }
 
 @media (max-width: 480px) {
